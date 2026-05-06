@@ -20,4 +20,12 @@ models:
     # Config indicated by + and applies to all files under models/example/
     bronze:
       +materialized: table
-      schema: bronze #custom schema for bronze layer
+      +schema: bronze #custom schema for bronze layer
+    silver:
+      +materialized: table
+      +schema: silver #custom schema for silver layer
+    gold:
+      +materialized: table
+      +schema: gold #custom schema for gold layer
+      epheremal:
+        +materialized: ephemeral
