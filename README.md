@@ -144,7 +144,7 @@ dbt_snowflake_aws/
 
 ## Data Flow
 
-1. **Ingestion**: Raw data from Airbnb staging tables (bookings, listings, hosts)
+1. **Ingestion**: Raw data from UrbanNest staging tables (bookings, listings, hosts)
 2. **Bronze**: Incremental loading with basic transformations
 3. **Silver**: Data cleaning, type casting, business logic application
 4. **Gold Dimensions**: Create dim_listings, dim_hosts, dim_bookings from silver layer
