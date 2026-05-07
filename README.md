@@ -17,9 +17,9 @@ The project follows a **Medallion Architecture** with a **Star Schema** in the G
 - **Dimension Tables**: `dim_listings`, `dim_hosts`, `dim_bookings` - Descriptive attributes
 - **OBT (One Big Table)**: Denormalized analytics table for complex queries, built from silver models using `ref()` so dbt DAG dependencies resolve correctly
 
-### Architecture Diagram
+### Architecture
 
-![Architecture Diagram](change-here)
+![Architecture ](/Users/tusharkulkarni/MS USA Docs/Data Engineering/dbt/Airbnb/dbt_snowflake_aws/Architecture.png)
 
 ## Key dbt Concepts Used
 
@@ -199,7 +199,7 @@ dbt test --select fact
 
 ### DAG Visualization
 
-![DAG Diagram](change-here)
+![DAG Diagram](/Users/tusharkulkarni/MS USA Docs/Data Engineering/dbt/Airbnb/dbt_snowflake_aws/DAG.png)
 
 ## Key Models
 
