@@ -13,28 +13,10 @@ select
     b.service_fee,
     b.total_booking_amount + coalesce(b.cleaning_fee, 0) + coalesce(b.service_fee, 0) as total_revenue,
 
-    -- Degenerate Dimensions (from fact)
+    -- Degenerate Dimensions (intrinsic to the booking transaction)
     b.booking_date,
     b.booking_status,
-    b.booking_created_at,
-
-    -- Dimension Attributes (denormalized for analytics)
-    l.property_type,
-    l.room_type,
-    l.city,
-    l.country,
-    l.bedrooms,
-    l.bathrooms,
-    l.price_per_night,
-    l.price_category,
-    l.size_category,
-
-    h.host_name,
-    h.is_superhost,
-    h.response_rate,
-    h.response_rate_category,
-    h.years_as_host,
-    h.host_experience_level
+    b.booking_created_at
 
 from {{ ref('dim_bookings') }} b
 left join {{ ref('dim_listings') }} l on b.listing_id = l.listing_id
