@@ -337,14 +337,6 @@ dbt compile --select analyses/revenue_optimization.sql
 - **Data Quality**: Automated test results
 - **Documentation**: Auto-generated model docs
 
-## CI/CD Integration
-
-The project supports automated pipelines:
-- Automated testing on PRs
-- Scheduled model refreshes
-- Documentation deployment
-- Alerting on test failures
-
 ## Troubleshooting
 
 ### Common Issues
