@@ -1,4 +1,4 @@
-# Data Engineering Project with dbt and Snowflake
+# UrbanNest Analytics Engineering — dbt + Snowflake Medallion Warehouse
 
 ## Overview
 
