@@ -149,7 +149,7 @@ dbt_snowflake_aws/
 3. **Silver**: Data cleaning, type casting, business logic application
 4. **Gold Dimensions**: Create dim_listings, dim_hosts, dim_bookings from silver layer
 5. **Gold Fact**: Build fact table joining dimensions in star schema
-6. **Gold OBT**: Create denormalized analytics table from silver layer using `ref()`-based joins
+6. **Gold OBT**: Create denormalized analytics table from silver layer using `ref()`- based joins
 7. **Snapshots**: SCD Type 2 on dimension tables for historical tracking
 
 ## Installation
