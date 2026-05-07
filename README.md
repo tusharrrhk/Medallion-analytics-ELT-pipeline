@@ -1,8 +1,8 @@
-# Airbnb Data Engineering Project with dbt
+# Data Engineering Project with dbt and Snowflake
 
 ## Overview
 
-This project implements a comprehensive data warehouse for Airbnb data using dbt (Data Build Tool) on Snowflake. It follows a medallion architecture (Bronze, Silver, Gold layers) to transform raw Airbnb data from AWS S3 into analytical-ready datasets. The project includes data modeling, testing, documentation, and analytics capabilities.
+This project implements a comprehensive data warehouse for UrbanNest data using dbt (Data Build Tool) on Snowflake. It follows a medallion architecture (Bronze, Silver, Gold layers) to transform raw UrbanNest data from AWS S3 into analytical-ready datasets. The project includes data modeling, testing, documentation, and analytics capabilities.
 
 ## Architecture
 
@@ -29,7 +29,7 @@ Sources define the raw data tables from external systems. This project uses Snow
 ```yaml
 sources:
   - name: staging
-    database: airbnb
+    database: urbannest
     schema: staging
     tables:
       - name: bookings
