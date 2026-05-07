@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project implements a comprehensive data warehouse for Airbnb data using dbt (Data Build Tool) on Snowflake. It follows a medallion architecture (Bronze, Silver, Gold layers) to transform raw Airbnb data into analytical-ready datasets. The project includes data modeling, testing, documentation, and analytics capabilities.
+This project implements a comprehensive data warehouse for Airbnb data using dbt (Data Build Tool) on Snowflake. It follows a medallion architecture (Bronze, Silver, Gold layers) to transform raw Airbnb data from AWS S3 into analytical-ready datasets. The project includes data modeling, testing, documentation, and analytics capabilities.
 
 ## Architecture
 
@@ -19,7 +19,7 @@ The project follows a **Medallion Architecture** with a **Star Schema** in the G
 
 ### Architecture
 
-![Architecture ](/Users/tusharkulkarni/MS USA Docs/Data Engineering/dbt/Airbnb/dbt_snowflake_aws/Architecture.png)
+![Architecture ](dbt_snowflake_aws/Architecture.png)
 
 ## Key dbt Concepts Used
 
@@ -199,7 +199,7 @@ dbt test --select fact
 
 ### DAG Visualization
 
-![DAG Diagram](/Users/tusharkulkarni/MS USA Docs/Data Engineering/dbt/Airbnb/dbt_snowflake_aws/DAG.png)
+![DAG Diagram](dbt_snowflake_aws/DAG.png)
 
 ## Key Models
 
