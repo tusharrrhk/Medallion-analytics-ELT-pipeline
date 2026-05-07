@@ -124,19 +124,17 @@ models:
       - name: booking_id
         tests:
           - not_null
+          - unique
       - name: listing_id
         tests:
           - not_null
       - name: host_id
         tests:
           - not_null
-      - name: total_booking_amount
+      - name: booking_amount
         tests:
           - not_null
-      - name: cleaning_fee
-        tests:
-          - not_null
-      - name: service_fee
+      - name: total_revenue
         tests:
           - not_null
 
@@ -164,6 +162,54 @@ models:
       - name: bathrooms
         tests:
           - not_null
+
+  # Gold Layer Dimension Tests
+  - name: dim_listings
+    columns:
+      - name: listing_id
+        tests:
+          - not_null
+          - unique
+      - name: host_id
+        tests:
+          - not_null
+      - name: property_type
+        tests:
+          - not_null
+      - name: price_per_night
+        tests:
+          - not_null
+
+  - name: dim_hosts
+    columns:
+      - name: host_id
+        tests:
+          - not_null
+          - unique
+      - name: host_name
+        tests:
+          - not_null
+      - name: is_superhost
+        tests:
+          - accepted_values:
+              values: [true, false]
+
+  - name: dim_bookings
+    columns:
+      - name: booking_id
+        tests:
+          - not_null
+          - unique
+      - name: listing_id
+        tests:
+          - not_null
+      - name: host_id
+        tests:
+          - not_null
+      - name: booking_status
+        tests:
+          - accepted_values:
+              values: ['confirmed', 'cancelled', 'pending', 'completed']
 
   # Ephemeral Models (no tests needed as they're not materialized)
   - name: bookings

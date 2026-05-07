@@ -1,6 +1,6 @@
 snapshots:
   - name: dim_listings
-    relation: ref('listings')
+    relation: ref('dim_listings')
     config:
       schema: gold
       database: AIRBNB

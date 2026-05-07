@@ -1,34 +1,42 @@
-{% set configs = [
-    {
-        "table":'airbnb.gold.obt',
-        "columns":"gold_obt.booking_id, gold_obt.listing_id, gold_obt.host_id, gold_obt.total_booking_amount, gold_obt.cleaning_fee, gold_obt.service_fee, gold_obt.bedrooms, gold_obt.bathrooms, gold_obt.price_per_night, gold_obt.response_rate",
-        "alias":'gold_obt'
-    },
-    {
-        "table":'airbnb.gold.dim_listings',
-        "columns":"",
-        "alias":'dim_listings',
-        "join_condition":'gold_obt.listing_id = dim_listings.listing_id'
-    },
-    {
-        "table":'airbnb.gold.dim_hosts',
-        "columns":"",
-        "alias":'dim_hosts',
-        "join_condition":'gold_obt.host_id = dim_hosts.host_id'
-    }
-] %}
+-- Fact table for Airbnb bookings - Star Schema
+{{ config(materialized='table') }}
 
 select
+    -- Foreign Keys
+    b.booking_id,
+    b.listing_id,
+    b.host_id,
 
-        {{ configs[0]['columns'] }}
+    -- Measures
+    b.total_booking_amount as booking_amount,
+    b.cleaning_fee,
+    b.service_fee,
+    b.total_booking_amount + coalesce(b.cleaning_fee, 0) + coalesce(b.service_fee, 0) as total_revenue,
 
-from 
-    {% for config in configs %}
-    {% if loop.first %}
-        {{ config['table'] }} as {{ config['alias'] }}
-    {% else %}
-        left join {{ config['table'] }} as {{ config['alias'] }}
-        on {{ config['join_condition'] }}
-    {% endif %}
-{% endfor %}
+    -- Degenerate Dimensions (from fact)
+    b.booking_date,
+    b.booking_status,
+    b.created_at as booking_created_at,
+
+    -- Dimension Attributes (denormalized for analytics)
+    l.property_type,
+    l.room_type,
+    l.city,
+    l.country,
+    l.bedrooms,
+    l.bathrooms,
+    l.price_per_night,
+    l.price_category,
+    l.size_category,
+
+    h.host_name,
+    h.is_superhost,
+    h.response_rate,
+    h.response_rate_category,
+    h.years_as_host,
+    h.host_experience_level
+
+from {{ ref('dim_bookings') }} b
+left join {{ ref('dim_listings') }} l on b.listing_id = l.listing_id
+left join {{ ref('dim_hosts') }} h on b.host_id = h.host_id
 

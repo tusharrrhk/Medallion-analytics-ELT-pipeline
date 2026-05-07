@@ -6,11 +6,16 @@ This project implements a comprehensive data warehouse for Airbnb data using dbt
 
 ## Architecture
 
-The project follows a **Medallion Architecture**:
+The project follows a **Medallion Architecture** with a **Star Schema** in the Gold layer:
 
 - **Bronze Layer**: Raw data ingestion from source systems
 - **Silver Layer**: Cleaned and transformed data with business logic
-- **Gold Layer**: Aggregated and dimensional models for analytics
+- **Gold Layer**: Dimensional modeling with Star Schema (Fact + Dimensions)
+
+### Star Schema Design
+- **Fact Table**: `fact` - Central table containing booking measures and foreign keys
+- **Dimension Tables**: `dim_listings`, `dim_hosts`, `dim_bookings` - Descriptive attributes
+- **OBT (One Big Table)**: Denormalized analytics table for complex queries
 
 ## Key dbt Concepts Used
 
@@ -107,8 +112,11 @@ dbt_snowflake_aws/
 │   │   ├── silver_hosts.sql
 │   │   └── silver_listing.sql
 │   └── gold/                # Analytics layer
-│       ├── fact.sql         # Fact table
-│       ├── obt.sql          # One Big Table
+│       ├── fact.sql         # Fact table (star schema center)
+│       ├── obt.sql          # One Big Table (denormalized)
+│       ├── dim_listings.sql # Listings dimension
+│       ├── dim_hosts.sql    # Hosts dimension
+│       ├── dim_bookings.sql # Bookings dimension
 │       └── epheremal/       # Ephemeral models
 ├── macros/                  # Reusable SQL functions
 │   ├── generate_schema_name.sql
@@ -132,10 +140,13 @@ dbt_snowflake_aws/
 
 ## Data Flow
 
-1. **Ingestion**: Raw data from Airbnb staging tables
+1. **Ingestion**: Raw data from Airbnb staging tables (bookings, listings, hosts)
 2. **Bronze**: Incremental loading with basic transformations
 3. **Silver**: Data cleaning, type casting, business logic application
-4. **Gold**: Dimensional modeling, aggregations, analytics-ready tables
+4. **Gold Dimensions**: Create dim_listings, dim_hosts, dim_bookings from silver layer
+5. **Gold Fact**: Build fact table joining dimensions in star schema
+6. **Gold OBT**: Create denormalized analytics table from silver layer
+7. **Snapshots**: SCD Type 2 on dimension tables for historical tracking
 
 ## Installation
 
@@ -197,10 +208,17 @@ dbt test --select fact
 - `silver_hosts`: Standardized host information
 - `silver_listing`: Processed listing data
 
-### Gold Layer
-- `fact`: Fact table with booking metrics
-- `obt`: One Big Table for comprehensive analytics
-- `dim_*`: Dimension tables via snapshots
+### Gold Layer - Star Schema
+- **`fact`**: Central fact table with booking measures and foreign keys to dimensions
+- **`dim_listings`**: Listing dimension with property details and categories
+- **`dim_hosts`**: Host dimension with performance metrics and experience levels
+- **`dim_bookings`**: Booking dimension with status and temporal attributes
+- **`obt`**: One Big Table - denormalized view for complex analytics queries
+
+### Snapshots (SCD Type 2)
+- `dim_bookings_snapshot`: Historical tracking of booking changes
+- `dim_hosts_snapshot`: Historical tracking of host changes
+- `dim_listings_snapshot`: Historical tracking of listing changes
 
 ## Macros & Utilities
 
