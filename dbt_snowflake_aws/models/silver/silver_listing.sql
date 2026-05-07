@@ -13,7 +13,6 @@ select
     country,
     bedrooms,
     bathrooms,
-    accommodates,
     price_per_night,
     {{ tag('price_per_night') }} as price_category,
     created_at

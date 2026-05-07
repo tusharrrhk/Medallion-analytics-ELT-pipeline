@@ -3,7 +3,6 @@
 select
     booking_id,
     listing_id,
-    host_id,
     booking_date,
     total_booking_amount,
     cleaning_fee,

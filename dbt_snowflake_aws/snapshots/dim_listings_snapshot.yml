@@ -1,5 +1,5 @@
 snapshots:
-  - name: dim_listings
+  - name: dim_listings_snapshot
     relation: ref('dim_listings')
     config:
       schema: gold

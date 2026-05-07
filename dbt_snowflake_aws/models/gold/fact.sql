@@ -4,8 +4,8 @@
 select
     -- Foreign Keys
     b.booking_id,
-    b.listing_id,
-    b.host_id,
+    l.listing_id,
+    l.host_id,
 
     -- Measures
     b.total_booking_amount as booking_amount,
@@ -16,7 +16,7 @@ select
     -- Degenerate Dimensions (from fact)
     b.booking_date,
     b.booking_status,
-    b.created_at as booking_created_at,
+    b.booking_created_at,
 
     -- Dimension Attributes (denormalized for analytics)
     l.property_type,
@@ -38,5 +38,5 @@ select
 
 from {{ ref('dim_bookings') }} b
 left join {{ ref('dim_listings') }} l on b.listing_id = l.listing_id
-left join {{ ref('dim_hosts') }} h on b.host_id = h.host_id
+left join {{ ref('dim_hosts') }} h on l.host_id = h.host_id
 

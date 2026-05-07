@@ -15,7 +15,11 @@ The project follows a **Medallion Architecture** with a **Star Schema** in the G
 ### Star Schema Design
 - **Fact Table**: `fact` - Central table containing booking measures and foreign keys
 - **Dimension Tables**: `dim_listings`, `dim_hosts`, `dim_bookings` - Descriptive attributes
-- **OBT (One Big Table)**: Denormalized analytics table for complex queries
+- **OBT (One Big Table)**: Denormalized analytics table for complex queries, built from silver models using `ref()` so dbt DAG dependencies resolve correctly
+
+### Architecture Diagram
+
+![Architecture Diagram](change-here)
 
 ## Key dbt Concepts Used
 
@@ -74,11 +78,11 @@ Slowly Changing Dimensions (SCD) for historical tracking.
 
 ```yaml
 snapshots:
-  - name: dim_bookings
-    relation: ref('bookings')
+  - name: dim_bookings_snapshot
+    relation: ref('dim_bookings')
     config:
       strategy: timestamp
-      updated_at: created_at
+      updated_at: booking_date
       unique_key: booking_id
 ```
 
@@ -128,9 +132,9 @@ dbt_snowflake_aws/
 │   ├── listing_availability_patterns.sql # Utilization and pricing insights
 │   └── revenue_optimization.sql          # Revenue forecasting and optimization
 ├── snapshots/               # SCD snapshots
-│   ├── dim_bookings.yml
-│   ├── dim_hosts.yml
-│   └── dim_listings.yml
+│   ├── dim_bookings_snapshot.yml
+│   ├── dim_hosts_snapshot.yml
+│   └── dim_listings_snapshot.yml
 ├── tests/                   # Data quality tests
 │   └── source_tests.sql
 ├── seeds/                   # Static data
@@ -145,7 +149,7 @@ dbt_snowflake_aws/
 3. **Silver**: Data cleaning, type casting, business logic application
 4. **Gold Dimensions**: Create dim_listings, dim_hosts, dim_bookings from silver layer
 5. **Gold Fact**: Build fact table joining dimensions in star schema
-6. **Gold OBT**: Create denormalized analytics table from silver layer
+6. **Gold OBT**: Create denormalized analytics table from silver layer using `ref()`-based joins
 7. **Snapshots**: SCD Type 2 on dimension tables for historical tracking
 
 ## Installation
@@ -195,6 +199,7 @@ dbt test --select fact
 
 ### DAG Visualization
 
+![DAG Diagram](change-here)
 
 ## Key Models
 
@@ -292,10 +297,10 @@ dbt test --select test_type:relationships
 
 ## Snapshots (SCD Type 2)
 
-Maintains historical versions of dimension data:
-- `dim_bookings`: Booking dimension history
-- `dim_hosts`: Host information history
-- `dim_listings`: Listing details history
+Maintains historical versions of dimension data through snapshot resources:
+- `dim_bookings_snapshot`: Booking dimension history
+- `dim_hosts_snapshot`: Host information history
+- `dim_listings_snapshot`: Listing details history
 
 ## Analytics & Reporting
 

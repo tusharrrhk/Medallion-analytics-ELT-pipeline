@@ -203,9 +203,6 @@ models:
       - name: listing_id
         tests:
           - not_null
-      - name: host_id
-        tests:
-          - not_null
       - name: booking_status
         tests:
           - accepted_values:

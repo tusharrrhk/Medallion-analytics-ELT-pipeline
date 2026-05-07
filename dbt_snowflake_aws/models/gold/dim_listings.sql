@@ -9,7 +9,6 @@ select
     country,
     bedrooms,
     bathrooms,
-    accommodates,
     price_per_night,
     price_category,
     created_at as listing_created_at,

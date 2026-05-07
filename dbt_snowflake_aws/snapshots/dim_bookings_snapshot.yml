@@ -1,10 +1,10 @@
 snapshots:
-  - name: dim_hosts
-    relation: ref('dim_hosts')
+  - name: dim_bookings_snapshot
+    relation: ref('dim_bookings')
     config:
       schema: gold
       database: AIRBNB
-      unique_key: host_id
+      unique_key: booking_id
       strategy: timestamp
-      updated_at: host_created_at
+      updated_at: booking_created_at
       dbt_valid_to_current: "to_date('9999-12-31')"
