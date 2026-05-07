@@ -2,3 +2,176 @@ models:
   - name: bronze
     config:
       materialized: view
+
+  # Bronze Layer Tests
+  - name: bronze_bookings
+    columns:
+      - name: booking_id
+        tests:
+          - not_null
+          - unique
+      - name: listing_id
+        tests:
+          - not_null
+      - name: booking_date
+        tests:
+          - not_null
+      - name: booking_amount
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+
+  - name: bronze_listings
+    columns:
+      - name: listing_id
+        tests:
+          - not_null
+          - unique
+      - name: host_id
+        tests:
+          - not_null
+      - name: property_type
+        tests:
+          - not_null
+      - name: price_per_night
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+
+  - name: bronze_hosts
+    columns:
+      - name: host_id
+        tests:
+          - not_null
+          - unique
+      - name: host_name
+        tests:
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+
+  # Silver Layer Tests
+  - name: silver_booking
+    columns:
+      - name: booking_id
+        tests:
+          - not_null
+          - unique
+      - name: listing_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_listing')
+              field: listing_id
+      - name: booking_date
+        tests:
+          - not_null
+      - name: total_booking_amount
+        tests:
+          - not_null
+      - name: booking_status
+        tests:
+          - accepted_values:
+              values: ['confirmed', 'cancelled', 'pending', 'completed']
+
+  - name: silver_hosts
+    columns:
+      - name: host_id
+        tests:
+          - not_null
+          - unique
+      - name: host_name
+        tests:
+          - not_null
+      - name: is_superhost
+        tests:
+          - accepted_values:
+              values: [true, false]
+
+  - name: silver_listing
+    columns:
+      - name: listing_id
+        tests:
+          - not_null
+          - unique
+      - name: host_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_hosts')
+              field: host_id
+      - name: property_type
+        tests:
+          - not_null
+      - name: price_per_night
+        tests:
+          - not_null
+      - name: bedrooms
+        tests:
+          - not_null
+      - name: bathrooms
+        tests:
+          - not_null
+
+  # Gold Layer Tests
+  - name: fact
+    columns:
+      - name: booking_id
+        tests:
+          - not_null
+      - name: listing_id
+        tests:
+          - not_null
+      - name: host_id
+        tests:
+          - not_null
+      - name: total_booking_amount
+        tests:
+          - not_null
+      - name: cleaning_fee
+        tests:
+          - not_null
+      - name: service_fee
+        tests:
+          - not_null
+
+  - name: obt
+    columns:
+      - name: booking_id
+        tests:
+          - not_null
+          - unique
+      - name: listing_id
+        tests:
+          - not_null
+      - name: host_id
+        tests:
+          - not_null
+      - name: total_booking_amount
+        tests:
+          - not_null
+      - name: price_per_night
+        tests:
+          - not_null
+      - name: bedrooms
+        tests:
+          - not_null
+      - name: bathrooms
+        tests:
+          - not_null
+
+  # Ephemeral Models (no tests needed as they're not materialized)
+  - name: bookings
+    config:
+      materialized: ephemeral
+  - name: hosts
+    config:
+      materialized: ephemeral
+  - name: listings
+    config:
+      materialized: ephemeral
