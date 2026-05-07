@@ -1,11 +1,16 @@
 # UrbanNest Analytics Engineering — dbt + Snowflake Medallion Warehouse
 
+![dbt](https://img.shields.io/badge/dbt-FF694B?style=flat&logo=dbt&logoColor=white)
+![Snowflake](https://img.shields.io/badge/Snowflake-29B5E8?style=flat&logo=snowflake&logoColor=white)
+![AWS S3](https://img.shields.io/badge/AWS_S3-FF9900?style=flat&logo=amazons3&logoColor=white)
+
 ## Overview
 
 This project implements a comprehensive data warehouse for UrbanNest data using dbt (Data Build Tool) on Snowflake. It follows a medallion architecture (Bronze, Silver, Gold layers) to transform raw UrbanNest data from AWS S3 into analytical-ready datasets. The project includes data modeling, testing, documentation, and analytics capabilities.
 
 ## Architecture
 
+Raw data is staged from AWS S3 into Snowflake's staging schema before Bronze layer ingestion.
 The project follows a **Medallion Architecture** with a **Star Schema** in the Gold layer:
 
 - **Bronze Layer**: Raw data ingestion from source systems
@@ -121,7 +126,7 @@ dbt_snowflake_aws/
 │       ├── dim_listings.sql # Listings dimension
 │       ├── dim_hosts.sql    # Hosts dimension
 │       ├── dim_bookings.sql # Bookings dimension
-│       └── epheremal/       # Ephemeral models
+│       └── ephemeral/       # Ephemeral models
 ├── macros/                  # Reusable SQL functions
 │   ├── generate_schema_name.sql
 │   ├── multiply.sql
