@@ -1,11 +1,16 @@
-# Airbnb Data Engineering Project with dbt
+# UrbanNest Analytics Engineering — dbt + Snowflake Medallion Warehouse
+
+![dbt](https://img.shields.io/badge/dbt-FF694B?style=flat&logo=dbt&logoColor=white)
+![Snowflake](https://img.shields.io/badge/Snowflake-29B5E8?style=flat&logo=snowflake&logoColor=white)
+![AWS S3](https://img.shields.io/badge/AWS_S3-FF9900?style=flat&logo=amazons3&logoColor=white)
 
 ## Overview
 
-This project implements a comprehensive data warehouse for Airbnb data using dbt (Data Build Tool) on Snowflake. It follows a medallion architecture (Bronze, Silver, Gold layers) to transform raw Airbnb data from AWS S3 into analytical-ready datasets. The project includes data modeling, testing, documentation, and analytics capabilities.
+This project implements a comprehensive data warehouse for UrbanNest data using dbt (Data Build Tool) on Snowflake. It follows a medallion architecture (Bronze, Silver, Gold layers) to transform raw UrbanNest data from AWS S3 into analytical-ready datasets. The project includes data modeling, testing, documentation, and analytics capabilities.
 
 ## Architecture
 
+Raw data is staged from AWS S3 into Snowflake's staging schema before Bronze layer ingestion.
 The project follows a **Medallion Architecture** with a **Star Schema** in the Gold layer:
 
 - **Bronze Layer**: Raw data ingestion from source systems
@@ -29,7 +34,7 @@ Sources define the raw data tables from external systems. This project uses Snow
 ```yaml
 sources:
   - name: staging
-    database: airbnb
+    database: urbannest
     schema: staging
     tables:
       - name: bookings
@@ -121,7 +126,7 @@ dbt_snowflake_aws/
 │       ├── dim_listings.sql # Listings dimension
 │       ├── dim_hosts.sql    # Hosts dimension
 │       ├── dim_bookings.sql # Bookings dimension
-│       └── epheremal/       # Ephemeral models
+│       └── ephemeral/       # Ephemeral models
 ├── macros/                  # Reusable SQL functions
 │   ├── generate_schema_name.sql
 │   ├── multiply.sql
@@ -144,12 +149,12 @@ dbt_snowflake_aws/
 
 ## Data Flow
 
-1. **Ingestion**: Raw data from Airbnb staging tables (bookings, listings, hosts)
+1. **Ingestion**: Raw data from UrbanNest staging tables (bookings, listings, hosts)
 2. **Bronze**: Incremental loading with basic transformations
 3. **Silver**: Data cleaning, type casting, business logic application
 4. **Gold Dimensions**: Create dim_listings, dim_hosts, dim_bookings from silver layer
 5. **Gold Fact**: Build fact table joining dimensions in star schema
-6. **Gold OBT**: Create denormalized analytics table from silver layer using `ref()`-based joins
+6. **Gold OBT**: Create denormalized analytics table from silver layer using `ref()`- based joins
 7. **Snapshots**: SCD Type 2 on dimension tables for historical tracking
 
 ## Installation
